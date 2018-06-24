@@ -31,22 +31,28 @@ def pick_store():
 
 def pick_products(cart, picked_store):
     picked_store.print_products()
-    selected_product = input('Select a product you would like to purchase. Type "back" when you\'re done. ')
-    while not selected_product == "back":
-        if selected_product.lower() in [product.name.lower() for product in picked_store.products]:
-            cart.add_to_cart(selected_product)
+    print("Select a product you would like to purchase. ")
+    selected_product = input('Type "back" when you want to select another store or "checkout" when you\'re done.')
+    while not (selected_product == "back" or selected_product == "checkout"):
+        for product in picked_store.products:
+            if product.name.lower() == selected_product.lower():
+                cart.add_to_cart(product)
 
         if not selected_product.lower() in [product.name.lower() for product in picked_store.products]:
             selected_product = input('No product with that name. Please try again. ')
         else:
             selected_product = input('What else do you want? ')
-    pick_store()
+    return selected_product
 
 
 def shop():
-    selected_store = pick_store()
     cart = Cart()
-    pick_products(cart, selected_store)
+    selected_store = pick_store()
+    response = pick_products(cart, selected_store)
+    while not response == "checkout":
+        selected_store = pick_store()
+        response = pick_products(cart, selected_store)
+    cart.checkout()
 
 def thank_you():
     print("Thank you for shopping with us at %s" % site_name)

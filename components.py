@@ -37,7 +37,7 @@ class Cart():
     def print_receipt(self):
         for product in self.products:
             print(product)
-        print ("TOTAL: {}".fomrat(self.get_total_price()))
+        print ("TOTAL: {}".format(self.get_total_price()))
 
     def checkout(self):
         self.print_receipt()
